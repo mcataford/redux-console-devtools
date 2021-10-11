@@ -1,9 +1,11 @@
-import type { Action, Context, EnhancedWindow } from './types'
+import type { AnyAction } from 'redux'
+
+import type { Context, EnhancedWindow } from './types'
 
 export default function exposeUtils(context: Context): void {
     const enhancedWindow: EnhancedWindow = window
 
-    function dispatchAction(action: Action) {
+    function dispatchAction(action: AnyAction) {
         context.storeRef.dispatch(action)
     }
 

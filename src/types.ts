@@ -1,9 +1,3 @@
-export type Action = any
-
-export type Store = any
-
-export type Dispatch = any
-
 export interface EnhancedWindow extends Window {
     reduxConsoleDevtools?: any
 }
@@ -11,7 +5,7 @@ export interface EnhancedWindow extends Window {
 export interface Context {
     filtered: Set<string>
     muted: boolean
-    storeRef: Store
+    storeRef: any
 }
 
 export interface Difference<T> {

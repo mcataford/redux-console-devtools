@@ -1,8 +1,8 @@
 import { diff } from 'deep-diff'
 import cloneDeep from 'lodash.clonedeep'
-import { Middleware } from 'redux'
+import { AnyAction, Dispatch, Middleware } from 'redux'
 
-import type { Action, Context, Dispatch, Store } from './types'
+import type { Context } from './types'
 import injectUtils from './cli'
 import outputDifferences from './diff'
 
@@ -13,12 +13,12 @@ export default function reduxConsoleDevtools(): Middleware {
         storeRef: null,
     }
 
-    function shouldSkip(action: Action) {
+    function shouldSkip(action: AnyAction) {
         return context.muted || context.filtered.has(action.type)
     }
 
     const middleware =
-        (store: Store) => (next: Dispatch) => (action: Action) => {
+        (store: any) => (next: Dispatch) => (action: AnyAction) => {
             // On first run, initialize context with store ref.
             if (!context.storeRef) context.storeRef = store
 

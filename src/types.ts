@@ -5,7 +5,7 @@ export type Store = any
 export type Dispatch = any
 
 export interface EnhancedWindow extends Window {
-    reduxToolies?: any
+    reduxConsoleDevtools?: any
 }
 
 export interface Context {

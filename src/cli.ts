@@ -6,14 +6,24 @@ export default function exposeUtils(context: Context): void {
     const enhancedWindow: EnhancedWindow = window
 
     enhancedWindow.reduxConsoleDevtools = {
-        setFilter: (handler: FilterFunction) => {
-            context.preHooks.set('filter', handler)
+        setFilter: (label: string, handler: FilterFunction) => {
+            context.preHooks.set(`filter__${label}`, handler)
         },
-        clearFilter: () => {
-            context.preHooks.delete('filter')
+        removeFilter: (label: string) => {
+            context.preHooks.delete(`filter__${label}`)
         },
-        showFilter: () =>
-            context.preHooks.get('filter')?.toString() ?? 'No filter set',
+        showFilters: () => {
+            const filters = [...context.preHooks.keys()].filter((key: string) =>
+                key.startsWith('filter__'),
+            )
+
+            for (const filter of filters) {
+                console.log(
+                    filter.replace(/^filter__/, ''),
+                    context.preHooks.get(filter)?.toString(),
+                )
+            }
+        },
         mute: () => {
             context.preHooks.set('mute', () => false)
         },

@@ -37,7 +37,8 @@ const store = createStore(
 When initialized, the middleware will inject utilities in the `window` global, making them accessible via
 `reduxConsoleDevtools` in your browser. The middleware will also output data about actions being fired and their
 effects on the application state.
-<div style="text-align: center;"><img src="./assets/sample.png"/></div>
+
+![The middleware outputs actions and their diffs to the console](./assets/sample.png)
 
 ## Utilities
 

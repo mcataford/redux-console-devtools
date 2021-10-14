@@ -6,7 +6,7 @@ export default function exposeUtils(context: Context): void {
     const enhancedWindow: EnhancedWindow = window
 
     enhancedWindow.reduxConsoleDevtools = {
-        setFilter: (label: string, handler: FilterFunction) => {
+        addFilter: (label: string, handler: FilterFunction) => {
             context.preHooks.set(`filter__${label}`, handler)
         },
         removeFilter: (label: string) => {

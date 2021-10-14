@@ -1,10 +1,26 @@
+import { AnyAction } from 'redux'
+
 export interface EnhancedWindow extends Window {
     reduxConsoleDevtools?: any
 }
 
+export type FilterFunction = (action: AnyAction) => boolean
+
+export type Hook = (
+    action: AnyAction,
+    extras?: Map<string, any>,
+    prevState?: any,
+    nextState?: any,
+) => boolean | undefined
+
+export interface CLIUtil {
+    description?: string
+    handler: (...args: unknown[]) => void
+}
+
 export interface Context {
-    filtered: Set<string>
-    muted: boolean
+    extras: Map<string, any>
+    preHooks: Map<string, Hook>
     storeRef: any
 }
 

@@ -2,19 +2,23 @@ import { diff } from 'deep-diff'
 import cloneDeep from 'lodash.clonedeep'
 import { AnyAction, Dispatch, Middleware } from 'redux'
 
-import type { Context } from './types'
+import type { Context, Hook } from './types'
 import injectUtils from './cli'
 import outputDifferences from './diff'
 
 export default function reduxConsoleDevtools(): Middleware {
     const context: Context = {
-        filtered: new Set(),
-        muted: false,
         storeRef: null,
+        extras: new Map(),
+        preHooks: new Map<string, Hook>(),
     }
 
-    function shouldSkip(action: AnyAction) {
-        return context.muted || context.filtered.has(action.type)
+    function pre(action: AnyAction, state: any): boolean {
+        for (const hook of context.preHooks.values()) {
+            if (hook(action, context.extras, state) === false) return false
+        }
+
+        return true
     }
 
     const middleware =
@@ -22,8 +26,9 @@ export default function reduxConsoleDevtools(): Middleware {
             // On first run, initialize context with store ref.
             if (!context.storeRef) context.storeRef = store
 
-            if (shouldSkip(action)) return
             const before = cloneDeep(store.getState())
+            if (!pre(action, before)) return
+
             next(action)
             const after = store.getState()
             const difference = diff(before, after)

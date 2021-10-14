@@ -1,27 +1,27 @@
 import type { AnyAction } from 'redux'
 
-import type { Context, EnhancedWindow } from './types'
+import type { Context, EnhancedWindow, FilterFunction } from './types'
 
 export default function exposeUtils(context: Context): void {
     const enhancedWindow: EnhancedWindow = window
 
-    function dispatchAction(action: AnyAction) {
-        context.storeRef.dispatch(action)
-    }
-
     enhancedWindow.reduxConsoleDevtools = {
-        addFilter: (filter: string) => {
-            context.filtered.add(filter)
+        setFilter: (handler: FilterFunction) => {
+            context.preHooks.set('filter', handler)
         },
-        removeFilter: (filter: string) => {
-            context.filtered.delete(filter)
+        clearFilter: () => {
+            context.preHooks.delete('filter')
         },
+        showFilter: () =>
+            context.preHooks.get('filter')?.toString() ?? 'No filter set',
         mute: () => {
-            context.muted = true
+            context.preHooks.set('mute', () => false)
         },
         unmute: () => {
-            context.muted = false
+            context.preHooks.delete('mute')
         },
-        dispatch: dispatchAction,
+        dispatch: (action: AnyAction) => {
+            context.storeRef.dispatch(action)
+        },
     }
 }

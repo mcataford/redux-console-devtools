@@ -2,25 +2,12 @@ import { applyMiddleware, createStore } from 'redux'
 
 import { ReduxConsoleDevtools } from '../src'
 
-interface ConsoleMocks {
-    log: jest.SpyInstance
-    groupCollapsed: jest.SpyInstance
-    group: jest.SpyInstance
-}
-
-const MOCK_ACTION_TYPE = 'mockAction'
-
-function getMockAction(payload?: unknown, type = MOCK_ACTION_TYPE) {
-    return {
-        type,
-        payload,
-    }
-}
-
-function mockReducer(state: any, action: any) {
-    if (action.type === MOCK_ACTION_TYPE) return { ...state, ...action.payload }
-    return state
-}
+import {
+    ConsoleMocks,
+    MOCK_ACTION_TYPE,
+    getMockAction,
+    mockReducer,
+} from './utils'
 
 describe('Middleware output', () => {
     let store: any

@@ -1,6 +1,8 @@
 # redux-console-devtools
 ⌨ Redux devtools in your browser console
 
+[![codecov](https://codecov.io/gh/mcataford/redux-console-devtools/branch/main/graph/badge.svg?token=d5D6yPSLwe)](https://codecov.io/gh/mcataford/redux-console-devtools)
+
 ## The road thus far
 
 This is inspired by several other tools and gaps in each of them that never quite seem to get bridged. Building from the

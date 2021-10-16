@@ -89,4 +89,29 @@ describe('Console commands', () => {
 
         expect(consoleMocks.groupCollapsed).toHaveBeenCalled()
     })
+
+    it('showFilters outputs existing filters', () => {
+        const filterLabel = 'filter'
+        ;(window as EnhancedWindow).reduxConsoleDevtools.addFilter(
+            filterLabel,
+            (action: AnyAction) => action.type !== 'wow',
+        )
+        ;(window as EnhancedWindow).reduxConsoleDevtools.showFilters()
+
+        expect(consoleMocks.log.mock.calls).toEqual([
+            [filterLabel, "(action) => action.type !== 'wow'"],
+        ])
+    })
+
+    it('dispatch dispatches action to the store', () => {
+        // Initialize the middleware
+        store.dispatch(getMockAction())
+
+        const mockPayload = { wo: 'wa' }
+
+        ;(window as EnhancedWindow).reduxConsoleDevtools.dispatch(
+            getMockAction(mockPayload),
+        )
+        expect(store.getState()).toEqual(mockPayload)
+    })
 })
